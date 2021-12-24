@@ -16,13 +16,12 @@ class SnippetSerializer(serializers.Serializer):
         return Snippet.objects.create(**validated_data)
     
     def update(self, instance, validated_data):
-        
-        self.instance.title = validated_data.get('title', self.instance.title)
-        self.instance.code = validated_data.get('code', self.instance.code)
-  
-        self.instance.lineous = validated_data.get('lineous', self.instance.lineous)
-        self.instance.language = validated_data.get('langauge', self.instance.language)
-        self.instance.style = validated_data.get('style', self.instance.style)
-        
+        instance.title = validated_data.get('title', instance.title)
+        instance.code = validated_data.get('code', instance.code)
+    
+        instance.lineous = validated_data.get('lineous', instance.lineous)
+        instance.language = validated_data.get('langauge', instance.language)
+        instance.style = validated_data.get('style', instance.style)
+    
         instance.save()
-        return self.instance
+        return instance
