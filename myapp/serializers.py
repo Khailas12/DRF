@@ -12,10 +12,14 @@ class SnippetSerializer(serializers.Serializer):
     language = serializers.ChoiceField(choices=LANGUAGE_CHOICES, default='python')
     style = serializers.ChoiceField(choices=STYLE_CHOICES, default='friendly')
     
-    def create(self, validated_data):
+    
+    # create and update defines how funny fledged instances are created or modfied.
+    
+    def create(self, validated_data):   # creates and return a new snippet instance
         return Snippet.objects.create(**validated_data)
     
-    def update(self, instance, validated_data):
+    def update(self, instance, validated_data):     
+        # update and return an existing snipptet instance
         instance.title = validated_data.get('title', instance.title)
         instance.code = validated_data.get('code', instance.code)
     
