@@ -7,7 +7,25 @@ from .serializers import SnippetSerializer
 
 
 @csrf_exempt
-def snippet_list(request, pk):  # CRUD
+def snippet_list(request):  # create
+    
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = SnippetSerializer(data=data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+    
+    elif request.method == 'GET':
+        snippets = Snippet.objects.all()
+        serializer = SnippetSerializer(snippets, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    
+
+@csrf_exempt
+def snippt_detail(request, pk):  # CRUD
     
     try:
         snippet = Snippet.objects.get(pk=pk)
