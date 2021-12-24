@@ -14,6 +14,7 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
+
 """
 request.DATA -> handles incoming json, yaml and other formats
 format=None -> api will be able to handle URLs of any format like json, eg: http://127.0.0.1:8000/snippets/.json or /.api
