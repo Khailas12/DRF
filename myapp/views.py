@@ -1,10 +1,16 @@
-from django.http import JsonResponse
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from .models import Snippet
 from .serializers import SnippetSerializer
+from rest_framework.renderers import JSONRenderer
 
+
+class JSONResponse(HttpResponse):
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
 
 @csrf_exempt
 def snippet_list(request):  # create
@@ -12,31 +18,28 @@ def snippet_list(request):  # create
     if request.method == 'POST':
         data = JSONParser().parse(request)
         serializer = SnippetSerializer(data=data)
-        
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+            return JSONResponse(serializer.data, status=201)
+        return JSONResponse(serializer.errors, status=400)
     
     elif request.method == 'GET':
         snippets = Snippet.objects.all()
         serializer = SnippetSerializer(snippets, many=True)
-        return JsonResponse(serializer.data, safe=False)
-    
+        return JSONResponse(serializer.data)
+        
 
 @csrf_exempt
 def snippt_detail(request, pk):  # CRUD
-    
+        
     try:
         snippet = Snippet.objects.get(pk=pk)
     except Snippet.DoesNotExist:
         return HttpResponse(status=404)
     
     if request.method == 'GET':
-        snippets = Snippet.objects.all()
-        serializer = SnippetSerializer(snippets, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
+        serializer = SnippetSerializer(snippet)
+        return JSONResponse(serializer.data)
     
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
@@ -44,10 +47,9 @@ def snippt_detail(request, pk):  # CRUD
         
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
-    
-    
+            return JSONResponse(serializer.data)
+        return JSONResponse(serializer.errors, status=400)
+
     elif request.method == 'DELETE':
         snippet.delete()
         return HttpResponse(status=204)
