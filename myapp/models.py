@@ -23,6 +23,5 @@ class Snippet(models.Model):
         choices=STYLE_CHOICES, default='friendly', max_length=123
     )
     
-    
     class Meta:
         ordering = ['created']
