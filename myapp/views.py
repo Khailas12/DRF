@@ -18,6 +18,9 @@ class JSONResponse(HttpResponse):
 """
 request.DATA -> handles incoming json, yaml and other formats
 format=None -> api will be able to handle URLs of any format like json, eg: http://127.0.0.1:8000/snippets/.json or /.api
+
+request.POST  # Only handles form data.  Only works for 'POST' method.
+request.data  # Handles arbitrary data.  Works for 'POST', 'PUT' and 'PATCH' methods.
 """
 
 @api_view(['POST', 'GET'])
@@ -51,7 +54,6 @@ def snippt_detail(request, pk, format=None):  # CRUD
         return Response(serializer.data)
     
     elif request.method == 'PUT':
-        data = JSONParser().parse(request)
         serializer = SnippetSerializer(snippet, data=request.DATA)
         
         if serializer.is_valid():
