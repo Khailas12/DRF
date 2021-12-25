@@ -4,7 +4,7 @@ from . import views
 
 
 urlpatterns = [
-    url('', views.snippet_list),
+    url('', views.SnippetList.as_view()),
     url('<int:pk>/', views.snippt_detail),
 ]
 
