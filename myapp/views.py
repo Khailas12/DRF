@@ -4,9 +4,9 @@ from rest_framework import mixins
 from rest_framework import generics
 
 
-"""
-mixin is a class which contains a combination of methods from other classes
-"""
+
+# mixin is a class which contains a combination of methods from other classes
+
 
 # compressed version of the one commented below
 class SnippetList(generics.CreateAPIView):
