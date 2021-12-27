@@ -5,7 +5,7 @@ from django.conf.urls import url, include
 
 urlpatterns = [
     path('snippets/', include('myapp.urls')),
-    path('users/', include('user_auth.urls')),
+    # path('users/', include('user_auth.urls')),
     
     path('admin/', admin.site.urls),
 ]
