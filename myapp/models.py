@@ -26,8 +26,6 @@ class Snippet(models.Model):
         choices=STYLE_CHOICES, default='friendly', max_length=123
     )
     
-    # authentication 
 
-    
     class Meta:
         ordering = ['created']

@@ -4,7 +4,7 @@ from pygments.formatters.html import HtmlFormatter
 from pygments import highlight
 
 
-class Snippet(models.Model):
+class User(models.Model):
     owner = models.ForeignKey(
         'auth.User', related_name='snippets', on_delete=models.CASCADE
         )
@@ -21,5 +21,5 @@ class Snippet(models.Model):
             style=self.style, linenos=linenos, full=True, **options
         )
         self.highlighted = highlight(self.code, lexer, formatter)
-        super(Snippet, self).save(*args, **kwargs)
+        super(User, self).save(*args, **kwargs)
     
