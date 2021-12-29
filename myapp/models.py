@@ -26,6 +26,24 @@ class Snippet(models.Model):
         choices=STYLE_CHOICES, default='friendly', max_length=123
     )
     
+    owner = models.ForeignKey(
+        'auth.User', related_name='user', on_delete=models.CASCADE
+        )
+
+    highlighted = models.TextField()
 
     class Meta:
         ordering = ['created']
+    
+
+    def save(self, *args, **kwargs):
+        lexer = get_lexer_by_name(self.language)
+        linenos = 'table' if self.linenos else False
+        options = {'table': self.title} if self.title else {}
+        
+        formatter = HtmlFormatter(
+            style=self.style, linenos=linenos, full=True, **options
+        )
+        self.highlighted = highlight(self.code, lexer, formatter)
+        super(User, self).save(*args, **kwargs)
+    

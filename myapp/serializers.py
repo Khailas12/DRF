@@ -6,14 +6,19 @@ class SnippetSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Snippet
+        read_only=('owner.username',)
+        # owner = serializers.Field(read_only=True)  # Field is read only in serialized. updating models sticks with deserialized
+        
         fields = [
             'id',
             'title',
             'code',
             'lineous',
             'language',
+            'read_only',
             'style',
         ]
+    
     
     # create and update defines how funny fledged instances are created or modfied.
     
